@@ -14,7 +14,7 @@ document.getElementById('install').addEventListener('click',async()=>{
  if(location.protocol==='content:'||location.protocol==='file:'){showHelp('<strong>Downloaded preview only.</strong> To test Save Catalogue, open the published HTTPS website in your phone browser. The saved R&J icon you already tested is not affected.');return}
  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
  const android=/Android/i.test(navigator.userAgent);
- if(ios)showHelp('<strong>Save to iPhone:</strong> Open this website in Safari, tap the Share button (square with an arrow), then choose <strong>Add to Home Screen</strong> and tap Add.');
+ if(ios)showHelp('<strong>📱 SAVE R&J TO YOUR iPHONE</strong><div style="margin-top:8px;line-height:1.9;font-size:14px"><b>1.</b> In Safari tap <b>⋯</b> then <b>Share ⬆</b><br><b>2.</b> Choose <b>Add to Home Screen</b> (under View More if needed)<br><b>3.</b> Tap <b>Add</b> ✓</div><small>The R&J icon stays on your phone. Future catalogue updates appear automatically when online.</small>');
  else if(android)showHelp('<strong>Save to Android:</strong> Open this website in Chrome, tap the three-dot menu ⋮, choose <strong>Add to Home screen</strong> or <strong>Install app</strong>, then confirm.');
  else showHelp('<strong>Save on your computer:</strong> In Chrome, open the three-dot menu and look under <strong>Cast, save and share</strong> for <strong>Install page as app</strong> or <strong>Create shortcut</strong>. To test saving to a phone, open the published HTTPS website on that phone.');
 });

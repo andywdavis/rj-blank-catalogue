@@ -12,15 +12,28 @@ document.getElementById('install').addEventListener('click',async()=>{
  if(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true){showHelp('<strong>Already saved.</strong> You are viewing the installed catalogue.');return}
  if(deferredPrompt){const p=deferredPrompt;deferredPrompt=null;try{await p.prompt();const result=await p.userChoice;if(result.outcome==='accepted'){showHelp('<strong>Installation accepted.</strong> Check your home screen or apps.');return}}catch(e){} }
  if(location.protocol==='content:'||location.protocol==='file:'){showHelp('<strong>Downloaded preview only.</strong> To test Save Catalogue, open the published HTTPS website in your phone browser. The saved R&J icon you already tested is not affected.');return}
- const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
- const android=/Android/i.test(navigator.userAgent);
- if(ios)showHelp(`<div class="save-title">📲 KEEP R&J ON YOUR iPHONE</div>
- <div class="save-step"><span class="save-number">1</span><span class="save-symbol">•••</span><span>Tap the <b>three dots</b> at the bottom of Safari, then <b>Share</b> ⬆</span></div>
- <div class="save-step"><span class="save-number">2</span><span class="save-symbol">⊞</span><span>Choose <b>Add to Home Screen</b> (tap <b>View More</b> if needed)</span></div>
- <div class="save-step"><span class="save-number">3</span><span class="save-symbol">✓</span><span>Tap <b>Add</b>. Your red R&J icon is ready!</span></div>
- <div class="save-small">You only save it once. The same icon opens future catalogue updates. If the menu looks different, use Safari’s Share button.</div>`);
- else if(android)showHelp('<strong>Save to Android:</strong> Open this website in Chrome, tap the three-dot menu ⋮, choose <strong>Add to Home screen</strong> or <strong>Install app</strong>, then confirm.');
- else showHelp('<strong>Save on your computer:</strong> In Chrome, open the three-dot menu and look under <strong>Cast, save and share</strong> for <strong>Install page as app</strong> or <strong>Create shortcut</strong>. To test saving to a phone, open the published HTTPS website on that phone.');
+ const ua=navigator.userAgent;
+ const ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const android=/Android/i.test(ua);
+ const chromeIOS=/CriOS/i.test(ua), firefoxIOS=/FxiOS/i.test(ua), edgeIOS=/EdgiOS/i.test(ua);
+ const googleAppIOS=/GSA\//i.test(ua);
+ const samsung=/SamsungBrowser/i.test(ua);
+ const firefox=/Firefox|FxiOS/i.test(ua);
+ const inApp=/FBAN|FBAV|Instagram|Line\/|TikTok/i.test(ua);
+ const step=(n,s,t)=>`<div class="save-step"><span class="save-number">${n}</span><span class="save-symbol">${s}</span><span>${t}</span></div>`;
+ const title='<div class="save-title">📲 SAVE R&J TO YOUR PHONE</div>';
+ const note='<div class="save-small">You only do this once. Your R&J icon opens the latest catalogue when connected to the internet.</div>';
+ const finish=step(3,'✓','Tap <b>Add</b> to finish.');
+ if(ios){
+  if(chromeIOS){showHelp(title+step(1,'⬆','Tap the <b>Share</b> icon in Chrome (usually beside the address bar or in the menu).')+step(2,'⊞','Choose <b>Add to Home Screen</b>. If it is not offered, use <b>Open in Safari</b> from the Share menu, then Safari’s Share → Add to Home Screen.')+finish+note);}
+  else if(firefoxIOS||edgeIOS||googleAppIOS||inApp){showHelp(title+step(1,'⬆','Open the browser <b>Share</b> or <b>•••</b> menu.')+step(2,'🧭','Choose <b>Open in Safari</b> (or copy this page link into Safari). In Safari, tap <b>Share</b> → <b>Add to Home Screen</b>.')+finish+note);}
+  else {showHelp(title+step(1,'⬆','In Safari tap <b>Share</b> (square with arrow). If you see <b>•••</b> first, tap it and choose <b>Share</b>.')+step(2,'⊞','Tap <b>Add to Home Screen</b>. If hidden, scroll down or tap <b>View More</b>.')+finish+note);}
+ }else if(android){
+  if(samsung){showHelp(title+step(1,'☰','In <b>Samsung Internet</b>, tap the <b>menu</b> (three lines ☰).')+step(2,'⊞','Choose <b>Add page to</b> → <b>Home screen</b> (wording may vary).')+finish+note);}
+  else if(firefox){showHelp(title+step(1,'⋮','In <b>Firefox</b>, tap the <b>menu</b> (⋮).')+step(2,'⊞','Choose <b>Install</b> or <b>Add to Home screen</b>.')+finish+note);}
+  else if(inApp){showHelp(title+step(1,'⋮','Tap the app browser’s <b>menu</b>.')+step(2,'🌐','Choose <b>Open in browser</b> or <b>Open in Chrome</b>, then Chrome menu ⋮ → <b>Add to Home screen</b>.')+finish+note);}
+  else {showHelp(title+step(1,'⋮','In <b>Chrome</b> or your browser, tap the <b>menu</b> (⋮).')+step(2,'⊞','Choose <b>Add to Home screen</b> or <b>Install app</b>.')+finish+note);}
+ }else showHelp(title+'On your phone, open this link in Safari, Chrome or Samsung Internet, then tap <b>Save Catalogue</b> for phone-specific instructions.');
 });
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 document.querySelectorAll('.action').forEach(el=>{el.addEventListener('pointerdown',()=>el.classList.add('pressed'));['pointerup','pointercancel','pointerleave','blur'].forEach(evt=>el.addEventListener(evt,()=>el.classList.remove('pressed')))});

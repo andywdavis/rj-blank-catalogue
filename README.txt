@@ -1,0 +1,1 @@
+Fresh blank R&J catalogue. Four buttons: Call Andy, WhatsApp Andy, Email Andy, Save Catalogue. Upload the CONTENTS of this folder to the root of a GitHub Pages repository. Install prompts are controlled by the browser.
